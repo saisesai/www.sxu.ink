@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-
 	"github.com/gin-gonic/gin"
 	"github.com/saisesai/www.sxu.ink/config"
 	"github.com/saisesai/www.sxu.ink/controller"
@@ -31,7 +30,13 @@ func main() {
 
 	router.POST("/api/user/register", controller.UserRegisterHandler)
 	router.POST("/api/user/login", controller.UserLoginHandler)
-	jwtAuth := router.Group("/", auth.JWTAuth())
+
+	var jwtAuth *gin.RouterGroup
+	if *config.Debug {
+		jwtAuth = router.Group("/")
+	} else {
+		jwtAuth = router.Group("/", auth.JWTAuth())
+	}
 	{
 		jwtAuth.POST("/api/hello", controller.Hello)
 

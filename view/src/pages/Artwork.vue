@@ -18,17 +18,51 @@ let artworkInfo = ref({
   ming_wen: "（殘後半部）太保齊郡王姓元，諱簡，字叔亮，司州河南郡洛陽縣都鄉洛陽里人，高宗之叔子，皇帝之第五叔也。惟王稟旻融度，資造流仁，澄神守質，志性寬雅，冥慶舛和，端宿墜日。以太和廿三年崴在己卯正月戊寅朔廿六日癸卯，春秋卌，寢疾，薨于第，謚曰順王。其年三月甲午卽窆于河南洛陽之北芒。迺鏤石囗銘，式述徽蹤。（下殘缺）",
 })
 
+const ImgCharDisplayRef = ref();
+
+const BtnResetCb = () => {
+  ImgCharDisplayRef.value.ResetPos();
+}
+
+const BtnOriginalSizeCb = () => {
+  ImgCharDisplayRef.value.OriginalSize();
+}
+
+const BtnShowAllCb = () => {
+  ImgCharDisplayRef.value.ShowAll();
+}
+
+const BtnTriggerModeCb = () => {
+  ImgCharDisplayRef.value.TriggerMode();
+}
+
 </script>
 
 <template>
   <div class="relative w-screen">
-<!--    显示图片-->
+    <!--    显示图片-->
     <div class="absolute w-1/2 h-screen">
-      <img-char-display/>
+      <img-char-display ref="ImgCharDisplayRef"/>
     </div>
-<!--    功能按钮-->
-    <div class="absolute left-1/2 w-1/12 h-screen bg-slate-200"></div>
-<!--    信息展示-->
+    <!--    功能按钮-->
+    <div
+        class="absolute left-1/2 w-1/12 h-screen
+        bg-slate-200 border-x-2 border-black
+        flex flex-col justify-evenly items-center">
+      <div>
+        <el-button type="primary" @click="BtnResetCb">图像复位</el-button>
+      </div>
+      <div>
+        <el-button type="primary" @click="BtnOriginalSizeCb">真实大小</el-button>
+      </div>
+      <div>
+        <el-button type="primary" @click="BtnShowAllCb">显示所有</el-button>
+      </div>
+      <div>
+        <el-button type="primary" @click="BtnTriggerModeCb">触发显示</el-button>
+      </div>
+    </div>
+    <!--    信息展示-->
     <div class="absolute right-0 w-5/12 h-screen p-4 overflow-y-auto space-y-2">
       <div v-if="(artworkInfo.ti_ming !== '')">
         <div class="text-2xl">题名：《{{ artworkInfo.ti_ming }}》</div>

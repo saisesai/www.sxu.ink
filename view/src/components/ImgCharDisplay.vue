@@ -20,9 +20,7 @@ const maxScale = 5.0, minScale = 0.1;
 let offsetX = 0.0, offsetY = 0.0;
 let chars: charInfo[];
 let isDragging = false;
-let displayAll = true;
-// let displayAll = false;
-
+let displayAll = false;
 
 const canvas_update = () => {
   canvas.width = container.clientWidth;
@@ -124,13 +122,49 @@ onMounted(() => {
     {
       char: "",
       pos: {
-        x1: 1124.103 , y1: 2051.282 , x2: 1238.974 , y2: 2174.359
+        x1: 171.656 , y1: 206.623 , x2: 260.662 , y2: 286.093
+      },
+      display: false,
+      selected: false,
+    },
+    {
+      char: "",
+      pos: {
+        x1: 171.656 , y1: 288.212 , x2: 259.603 , y2: 367.682
       },
       display: false,
       selected: false,
     },
   ]);
 })
+
+const ResetPos = () => {
+  scale = container.offsetWidth / image.naturalWidth;
+  offsetX = offsetY = 0.0;
+  canvas_update();
+}
+
+const OriginalSize = () => {
+  scale = 1.0;
+  offsetX = offsetY = 0.0;
+  canvas_update();
+}
+
+const ShowAll = () => {
+  displayAll = true;
+  canvas_update();
+}
+
+const TriggerMode = () => {
+  displayAll = false;
+  canvas_update();
+}
+
+const Update = () => {
+  canvas_update();
+}
+
+defineExpose({ResetPos, OriginalSize, ShowAll, TriggerMode, Update});
 </script>
 
 <template>
