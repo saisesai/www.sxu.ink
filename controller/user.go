@@ -12,7 +12,7 @@ import (
 
 func Hello(ctx *gin.Context) {
 	token := ctx.GetHeader("Authorization")
-	claims, err := auth.ParseToken(token)
+	claims, err := auth.ParseMapClaimsJwt(token)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"msg": err.Error(),
@@ -20,7 +20,7 @@ func Hello(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"msg": "hello, " + claims.User.Username})
+	ctx.JSON(http.StatusOK, gin.H{"msg": "hello, " + claims["username"].(string)})
 }
 
 func UserRegisterHandler(ctx *gin.Context) {
@@ -78,7 +78,7 @@ func UserLoginHandler(ctx *gin.Context) {
 		return
 	}
 
-	token, err := auth.GenerateToken(user)
+	token, err := auth.BuildMapClaimsJwt(user.Username, user.Password)
 	if err != nil {
 		L.WithError(err).Errorln("failed to generate token")
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -101,7 +101,7 @@ func UserSetPassword(ctx *gin.Context) {
 	)
 
 	token := ctx.GetHeader("Authorization")
-	claims, err := auth.ParseToken(token)
+	claims, err := auth.ParseMapClaimsJwt(token)
 	if err != nil {
 		L.WithError(err).Errorln("failed to generate token")
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -119,7 +119,9 @@ func UserSetPassword(ctx *gin.Context) {
 		return
 	}
 
-	user := claims.User
+	user := model.User{
+		Username: claims["username"].(string),
+	}
 	password := tmpParams["password"]
 	err = user.SetPassword(password)
 	if err != nil {
@@ -143,7 +145,7 @@ func UserSetNickName(ctx *gin.Context) {
 	)
 
 	token := ctx.GetHeader("Authorization")
-	claims, err := auth.ParseToken(token)
+	claims, err := auth.ParseMapClaimsJwt(token)
 	if err != nil {
 		L.WithError(err).Errorln("failed to generate token")
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -161,7 +163,9 @@ func UserSetNickName(ctx *gin.Context) {
 		return
 	}
 
-	user := claims.User
+	user := model.User{
+		Username: claims["username"].(string),
+	}
 	nickname := tmpParams["nickname"]
 	err = user.SetNickname(nickname)
 	if err != nil {
@@ -185,7 +189,7 @@ func UserSetGroup(ctx *gin.Context) {
 	)
 
 	token := ctx.GetHeader("Authorization")
-	claims, err := auth.ParseToken(token)
+	claims, err := auth.ParseMapClaimsJwt(token)
 	if err != nil {
 		L.WithError(err).Errorln("failed to generate token")
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -203,7 +207,9 @@ func UserSetGroup(ctx *gin.Context) {
 		return
 	}
 
-	user := claims.User
+	user := model.User{
+		Username: claims["username"].(string),
+	}
 	group := tmpParams["group"]
 	err = user.SetGroup(group)
 	if err != nil {
