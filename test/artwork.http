@@ -1,0 +1,21 @@
+POST http://localhost:5173/api/artwork/new
+Content-Type: application/json
+
+{}
+###
+POST http://localhost:5173/api/artwork/del/b803a8d9-4a50-4437-8210-ac8e5818f588
+Content-Type: application/json
+
+{}
+###
+POST http://localhost:5173/api/artwork/get/627c78c1-1232-4563-92d7-8fb5f74594e9
+Content-Type: application/json
+
+{}
+###
+POST http://localhost:5173/api/artwork/set/627c78c1-1232-4563-92d7-8fb5f74594e9
+Content-Type: application/json
+
+{
+  "chu_tu_di": "河南洛阳(中嘞，哥！)"
+}
