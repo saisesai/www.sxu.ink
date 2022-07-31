@@ -81,15 +81,6 @@ const canvas_update = () => {
   }
 }
 
-const canvas_on_wheel = (ev: WheelEvent) => {
-  scale -= ev.deltaY / 1500.0;
-  if (scale < minScale || scale > maxScale) {
-    scale += ev.deltaY / 1000.0;
-    return
-  }
-  canvas_update();
-}
-
 onMounted(() => {
   // get all vars
   container = document.getElementById("select-container") as HTMLDivElement;
@@ -101,7 +92,15 @@ onMounted(() => {
     canvas_update();
   }
   window.addEventListener("resize", canvas_update);
-  container.addEventListener("wheel", canvas_on_wheel);
+  container.addEventListener("wheel", (ev: WheelEvent) => {
+    //ev.preventDefault();
+    scale -= ev.deltaY / 1500.0;
+    if (scale < minScale || scale > maxScale) {
+      scale += ev.deltaY / 1000.0;
+      return
+    }
+    canvas_update();
+  });
   canvas.addEventListener("mousedown", (ev: MouseEvent) => {
     if (ev.button == 2) { // drag start
       isDragging = true;
@@ -120,7 +119,7 @@ onMounted(() => {
     }
     if (ev.button == 0) { // selecting end
       isSelecting = false;
-      if(firstPosX > secondPosX || firstPosY > secondPosY){
+      if (firstPosX > secondPosX || firstPosY > secondPosY) {
         ElMessage.error("请延坐上至右下方向框选！")
         return
       }
@@ -131,6 +130,12 @@ onMounted(() => {
           x2: ((secondPosX - offsetX) / scale).toFixed(3),
           y2: ((secondPosY - offsetY) / scale).toFixed(3),
         });
+        console.log(
+            "x1:", ((firstPosX - offsetX) / scale).toFixed(3), ",",
+            "y1:", ((firstPosY - offsetY) / scale).toFixed(3), ",",
+            "x2:", ((secondPosX - offsetX) / scale).toFixed(3), ",",
+            "y2:", ((secondPosY - offsetY) / scale).toFixed(3),
+        )
       }
     }
     // console.log(ev);
@@ -182,10 +187,9 @@ const TriggerMode = () => {
   canvas_update();
 }
 
-const Update = ()=> {
+const Update = () => {
   canvas_update();
 }
-
 
 defineExpose({ResetPos, OriginalSize, ShowAll, TriggerMode, Update});
 </script>

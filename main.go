@@ -29,18 +29,18 @@ func main() {
 
 	router.Use(gin_logrus.Logger(logrus.StandardLogger()), gin.Recovery())
 
-
 	router.POST("/api/user/register", controller.UserRegisterHandler)
 	router.POST("/api/user/login", controller.UserLoginHandler)
 	jwtAuth := router.Group("/", auth.JWTAuth())
 	{
 		jwtAuth.POST("/api/hello", controller.Hello)
-    
-    jwtAuth.POST("/api/user/setpassword", controller.UserSetPassword)
-		jwtAuth.POST("/api/user/setnickname", controller.UserSetNickName)
-		jwtAuth.POST("/api/user/setgroup", controller.UserSetGroup)
+
+		jwtAuth.POST("/api/user/password/set", controller.UserSetPassword)
+		jwtAuth.POST("/api/user/nickname/set", controller.UserSetNickName)
+		jwtAuth.POST("/api/user/group/set", controller.UserSetGroup)
 
 		jwtAuth.POST("/api/artwork/new", controller.ArtworkAddHandler)
+		jwtAuth.POST("/api/artwork/search", controller.ArtworkSearchHandler)
 		jwtAuth.POST("/api/artwork/del/:uuid", controller.ArtworkDeleteHandler)
 		jwtAuth.POST("/api/artwork/get/:uuid", controller.ArtworkGetHandler)
 		jwtAuth.POST("/api/artwork/set/:uuid", controller.ArtworkSetHandler)
@@ -51,10 +51,10 @@ func main() {
 		jwtAuth.POST("/api/image/set/:uuid", controller.ImageSetHandler)
 
 		jwtAuth.POST("/api/char/new", controller.CharAddHandler)
+		jwtAuth.POST("/api/char/search", controller.CharSearchHandler)
 		jwtAuth.POST("/api/char/del/:uuid", controller.CharDeleteHandler)
 		jwtAuth.POST("/api/char/get/:uuid", controller.CharGetHandler)
 		jwtAuth.POST("/api/char/set/:uuid", controller.CharSetHandler)
-
 
 	}
 	err = router.Run(*config.Listen)

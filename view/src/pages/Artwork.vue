@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from "vue";
+import ImgCharDisplay from "../components/ImgCharDisplay.vue";
 
 let artworkInfo = ref({
   ti_ming: "元简墓志",
@@ -21,10 +22,14 @@ let artworkInfo = ref({
 
 <template>
   <div class="relative w-screen">
-    <div class="relative container max-w-4xl mx-auto bg-white p-4 space-y-4">
-      <div class="relative w-full mx-auto">
-        <img src="/upload/3505f630-de92-474d-a02f-4f935958f44f.jpg" alt="3505f630-de92-474d-a02f-4f935958f44f.jpg">
-      </div>
+<!--    显示图片-->
+    <div class="absolute w-1/2 h-screen">
+      <img-char-display/>
+    </div>
+<!--    功能按钮-->
+    <div class="absolute left-1/2 w-1/12 h-screen bg-slate-200"></div>
+<!--    信息展示-->
+    <div class="absolute right-0 w-5/12 h-screen p-4 overflow-y-auto space-y-2">
       <div v-if="(artworkInfo.ti_ming !== '')">
         <div class="text-2xl">题名：《{{ artworkInfo.ti_ming }}》</div>
       </div>
