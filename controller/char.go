@@ -74,3 +74,22 @@ func CharSetHandler(ctx *gin.Context) {
 		"id":  id,
 	})
 }
+
+func CharSearchHandler(ctx *gin.Context) {
+	L := ctx.Value("L").(*logrus.Entry)
+	query := make(bson.M)
+	err := ctx.BindJSON(&query)
+	if err != nil {
+		L.WithError(err).Errorln("failed to bind json")
+		return
+	}
+	rst, err := model.SearchChar(query)
+	if err != nil {
+		L.WithError(err).Errorln("failed to search char")
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"msg": err.Error(),
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, rst)
+}

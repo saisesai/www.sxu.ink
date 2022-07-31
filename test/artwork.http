@@ -19,3 +19,11 @@ Content-Type: application/json
 {
   "chu_tu_di": "河南洛阳(中嘞，哥！)"
 }
+
+###
+POST http://localhost:5173/api/artwork/search
+Content-Type: application/json
+
+{
+  "chu_tu_di": {"$ne": null}
+}

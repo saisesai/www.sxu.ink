@@ -46,3 +46,13 @@ func TestSetArtwork(t *testing.T) {
 		"zang_nian": "太和23年（499）3月8日",
 	})
 }
+
+func TestSearchArtwork(t *testing.T) {
+	rst, err := SearchArtwork(bson.M{"chu_tu_di": nil})
+	if err != nil {
+		panic(err)
+	}
+	for _, r := range rst {
+		fmt.Println(r)
+	}
+}

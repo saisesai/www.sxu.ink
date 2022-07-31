@@ -28,6 +28,7 @@ func main() {
 	router.Use(gin_logrus.Logger(logrus.StandardLogger()), gin.Recovery())
 
 	router.POST("/api/artwork/new", controller.ArtworkAddHandler)
+	router.POST("/api/artwork/search", controller.ArtworkSearchHandler)
 	router.POST("/api/artwork/del/:uuid", controller.ArtworkDeleteHandler)
 	router.POST("/api/artwork/get/:uuid", controller.ArtworkGetHandler)
 	router.POST("/api/artwork/set/:uuid", controller.ArtworkSetHandler)
@@ -38,6 +39,7 @@ func main() {
 	router.POST("/api/image/set/:uuid", controller.ImageSetHandler)
 
 	router.POST("/api/char/new", controller.CharAddHandler)
+	router.POST("/api/char/search", controller.CharSearchHandler)
 	router.POST("/api/char/del/:uuid", controller.CharDeleteHandler)
 	router.POST("/api/char/get/:uuid", controller.CharGetHandler)
 	router.POST("/api/char/set/:uuid", controller.CharSetHandler)

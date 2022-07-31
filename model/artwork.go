@@ -53,3 +53,12 @@ func SetArtwork(pUuid string, pData bson.M) error {
 		bson.M{"$set": pData},
 	)
 }
+
+func SearchArtwork(pQuery bson.M) ([]bson.M, error) {
+	var batch []bson.M
+	err := artworkCol.Find(context.Background(), pQuery).All(&batch)
+	if err != nil {
+		return nil, err
+	}
+	return batch, nil
+}
