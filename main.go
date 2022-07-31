@@ -29,11 +29,16 @@ func main() {
 
 	router.Use(gin_logrus.Logger(logrus.StandardLogger()), gin.Recovery())
 
+
 	router.POST("/api/user/register", controller.UserRegisterHandler)
 	router.POST("/api/user/login", controller.UserLoginHandler)
 	jwtAuth := router.Group("/", auth.JWTAuth())
 	{
 		jwtAuth.POST("/api/hello", controller.Hello)
+    
+    jwtAuth.POST("/api/user/setpassword", controller.UserSetPassword)
+		jwtAuth.POST("/api/user/setnickname", controller.UserSetNickName)
+		jwtAuth.POST("/api/user/setgroup", controller.UserSetGroup)
 
 		jwtAuth.POST("/api/artwork/new", controller.ArtworkAddHandler)
 		jwtAuth.POST("/api/artwork/del/:uuid", controller.ArtworkDeleteHandler)
@@ -50,11 +55,8 @@ func main() {
 		jwtAuth.POST("/api/char/get/:uuid", controller.CharGetHandler)
 		jwtAuth.POST("/api/char/set/:uuid", controller.CharSetHandler)
 
-		jwtAuth.POST("/api/user/setpassword", controller.UserSetPassword)
-		jwtAuth.POST("/api/user/setnickname", controller.UserSetNickName)
-		jwtAuth.POST("/api/user/setgroup", controller.UserSetGroup)
-	}
 
+	}
 	err = router.Run(*config.Listen)
 	if err != nil {
 		logrus.WithError(err).Fatalln("service failed to startup!")
