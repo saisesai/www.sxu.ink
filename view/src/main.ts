@@ -16,17 +16,17 @@ const routes = [
         component: () => import("./pages/Home.vue"),
     },
     {
-        path: "/artwork/:id",
+        path: "/artwork/:uuid",
         name: "Artwork",
         component: () => import("./pages/Artwork.vue"),
     },
     {
-        path: "/artwork/edit/:id",
+        path: "/artwork/edit/:uuid",
         name: "ArtworkEdit",
         component: () => import("./pages/ArtworkEdit.vue"),
     },
     {
-        path: "/artwork/search",
+        path: "/artwork/search/:key",
         name: "ArtworkSearch",
         component: () => import("./pages/ArtworkSearch.vue"),
     },
@@ -41,7 +41,7 @@ const routes = [
         component: () => import("./pages/CharSearch.vue"),
     },
     {
-        path: "/char/select/:id",
+        path: "/char/select/:uuid",
         name: "CharSelect",
         component: () => import("./pages/CharSelect.vue"),
     },
