@@ -46,6 +46,18 @@ func FindCharByUuid(pUuid string) (bson.M, error) {
 	return rst, nil
 }
 
+func FindCharByValue(pVal string) (bson.M, error) {
+	rst := make(bson.M)
+	err := charCol.Find(
+		context.Background(),
+		bson.M{"char": pVal},
+	).One(rst)
+	if err != nil {
+		return nil, err
+	}
+	return rst, nil
+}
+
 func SetChar(pUuid string, pData bson.M) error {
 	return charCol.UpdateOne(
 		context.Background(),

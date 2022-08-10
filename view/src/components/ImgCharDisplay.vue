@@ -1,24 +1,16 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
-
-type charInfo = {
-  char: string,
-  pos: {
-    x1: number, y1: number, x2: number, y2: number,
-  },
-  display: boolean,
-  selected: boolean,
-}
+import {onMounted, ref} from "vue";
+import {CharInfo} from "../api/CharInfo";
 
 let container: HTMLDivElement;
 let canvas: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
 let image: HTMLImageElement;
-let image_drawable = false;
+let image_drawable = ref<boolean>(false);
 let scale = 1.0;
 const maxScale = 5.0, minScale = 0.1;
 let offsetX = 0.0, offsetY = 0.0;
-let chars: charInfo[];
+let chars: CharInfo[];
 let isDragging = false;
 let displayAll = false;
 
@@ -58,12 +50,12 @@ const canvas_update = () => {
   }
 }
 
-const load_image = (image_url: string, info: charInfo[]) => {
-  image_drawable = false;
+const load_image = (image_url: string, info: CharInfo[]) => {
+  image_drawable.value = false;
   image = new Image();
   image.src = image_url;
   image.onload = () => {
-    image_drawable = true;
+    image_drawable.value = true;
     scale = container.offsetWidth / image.naturalWidth;
     canvas_update();
   }
@@ -117,25 +109,6 @@ onMounted(() => {
   canvas.addEventListener("contextmenu", (ev: MouseEvent) => {
     ev.preventDefault();
   })
-  //[(285.902, 341.858), (381.202,464.262)]
-  load_image("/upload/3505f630-de92-474d-a02f-4f935958f44f.jpg", [
-    {
-      char: "",
-      pos: {
-        x1: 171.656 , y1: 206.623 , x2: 260.662 , y2: 286.093
-      },
-      display: false,
-      selected: false,
-    },
-    {
-      char: "",
-      pos: {
-        x1: 171.656 , y1: 288.212 , x2: 259.603 , y2: 367.682
-      },
-      display: false,
-      selected: false,
-    },
-  ]);
 })
 
 const ResetPos = () => {
@@ -160,15 +133,20 @@ const TriggerMode = () => {
   canvas_update();
 }
 
-const Update = () => {
-  canvas_update();
+const Update = () => canvas_update();
+
+const LoadImage = (uuid: string) => {
+  load_image("https://oss.www.sxu.ink/main/" + uuid + ".jpg", []);
 }
 
-defineExpose({ResetPos, OriginalSize, ShowAll, TriggerMode, Update});
+defineExpose({ResetPos, OriginalSize, ShowAll, TriggerMode, Update, LoadImage});
 </script>
 
 <template>
   <div id="canvas-container" class="relative w-full h-full">
+    <div class="absolute w-full h-full bg-white flex justify-center items-center" v-if="!image_drawable">
+      <div class="text-2xl">加载中...</div>
+    </div>
     <canvas id="canvas" class="bg-gray-500"/>
   </div>
 </template>

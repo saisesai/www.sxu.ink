@@ -2,8 +2,12 @@
 import ImgCharSelect from "../components/ImgCharSelect.vue";
 import {ref} from "vue";
 import {ElMessage} from "element-plus";
+import {CharInfo} from "../api/CharInfo";
+import {useRoute} from "vue-router";
 
-const ImgPath = "/upload/3505f630-de92-474d-a02f-4f935958f44f.jpg"
+const route = useRoute();
+
+const ImgPath = "https://oss.www.sxu.ink/main/" + route.params["uuid"] as string + ".jpg";
 
 const ImgCharSelectRef = ref();
 
@@ -23,15 +27,7 @@ const BtnTriggerModeCb = () => {
   ImgCharSelectRef.value.TriggerMode();
 }
 
-const PosTableData = ref<{
-  char: string,
-  pos: {
-    x1: number, y1: number, x2: number, y2: number,
-  },
-  display: boolean,
-  selected: boolean,
-  saved: boolean,
-}[]>([]);
+const PosTableData = ref<CharInfo[]>([]);
 
 const AddPosCb = (pos: { x1: number, y1: number, x2: number, y2: number }) => {
   // console.log(pos);

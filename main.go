@@ -58,7 +58,7 @@ func main() {
 		jwtAuth.POST("/api/char/new", controller.CharAddHandler)
 		jwtAuth.POST("/api/char/search", controller.CharSearchHandler)
 		jwtAuth.POST("/api/char/del/:uuid", controller.CharDeleteHandler)
-		jwtAuth.POST("/api/char/get/:uuid", controller.CharGetHandler)
+		jwtAuth.POST("/api/char/get/:value", controller.CharGetHandler)
 		jwtAuth.POST("/api/char/set/:uuid", controller.CharSetHandler)
 
 	}

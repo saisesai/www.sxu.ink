@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
+import {CharInfo} from "../api/CharInfo";
 
 const props = defineProps<{
   img: string,
-  list: {
-    char: string,
-    pos: {
-      x1: number, y1: number, x2: number, y2: number,
-    },
-    display: boolean,
-    selected: boolean,
-    saved: boolean,
-  }[],
+  list: CharInfo[],
 }>();
 
 const emit = defineEmits<{
@@ -32,10 +25,13 @@ let isSelecting = false;
 let firstPosX = 0, firstPosY = 0;
 let secondPosX = 0, secondPosY = 0;
 let displayAll = false;
+let image_drawable = ref<boolean>(false);
 
 const canvas_update = () => {
   canvas.width = container.clientWidth;
   canvas.height = container.clientHeight;
+
+  if(!image_drawable) return;
 
   ctx.drawImage(workImg, offsetX, offsetY, workImg.naturalWidth * scale, workImg.naturalHeight * scale)
 
@@ -89,6 +85,7 @@ onMounted(() => {
   // setup cbs
   workImg.onload = () => {
     scale = container.offsetWidth / workImg.naturalWidth;
+    image_drawable.value = true;
     canvas_update();
   }
   window.addEventListener("resize", canvas_update);
@@ -197,6 +194,9 @@ defineExpose({ResetPos, OriginalSize, ShowAll, TriggerMode, Update});
 <template>
   <div id="select-container"
        class="w-full h-full bg-gray-500">
+    <div class="absolute w-full h-full bg-white flex justify-center items-center" v-if="!image_drawable">
+      <div class="text-2xl">加载中...</div>
+    </div>
     <canvas id="canvas"></canvas>
   </div>
 </template>

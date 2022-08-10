@@ -40,8 +40,8 @@ func CharDeleteHandler(ctx *gin.Context) {
 
 func CharGetHandler(ctx *gin.Context) {
 	L := ctx.Value("L").(*logrus.Entry)
-	id := ctx.Param("uuid")
-	rst, err := model.FindCharByUuid(id)
+	value := ctx.Param("value")
+	rst, err := model.FindCharByValue(value)
 	if err != nil {
 		L.WithError(err).Errorln("failed to get char")
 		ctx.JSON(http.StatusInternalServerError, gin.H{
